@@ -11,6 +11,7 @@ public class BasicController : MonoBehaviour {
 	private void Update() {
 		if (useKeyboard) wasdUpdate();
 		if (useMouse) mouseUpdate();	
+		if (useRaycaster) rayUpdate();	
 	}
 
     // ~ ~ ~ ~ ~ ~ ~ ~ 
@@ -71,16 +72,20 @@ public class BasicController : MonoBehaviour {
     [Header("Mouse")]
     public bool useMouse = true;
     public bool showCursor = false;
+	public bool useButton = true;
+	public bool fixedZ = true;
 	public RotationAxes axes = RotationAxes.MouseXAndY;
 	public float sensitivityX = 2f;
 	public float sensitivityY = 2f;
-
 	public float minimumX = -360f;
 	public float maximumX = 360f;
-
 	public float minimumY = -60f;
 	public float maximumY = 60f;
+	public Vector3 mousePos = Vector3.zero;
+	public bool clicked = false;
+	public bool isDrawing = false;
 
+	private float zPos = 1f;
 	private float rotationY = 0f;
 
 	private void mouseStart() {
@@ -103,6 +108,65 @@ public class BasicController : MonoBehaviour {
 			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
 
 			transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0f);
+		}
+
+		// ~ ~ ~
+
+		clicked = false;
+
+		if (useButton) {
+			if (Input.GetMouseButtonDown(0) && GUIUtility.hotControl == 0) {
+				clicked = true;
+				isDrawing = true;
+			}
+
+			if (Input.GetMouseButton(0) && GUIUtility.hotControl == 0) {
+				if (!fixedZ) zPos = lastHitPos.z;
+				mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, zPos));
+			}
+
+			if (Input.GetMouseButtonUp(0)) {
+				isDrawing = false;
+			}
+		}
+	}
+
+	// ~ ~ ~ ~ ~ ~ ~ ~ 
+
+	[Header("Raycaster")]
+	public bool useRaycaster = true;
+	public bool isLooking = false;
+	public string isLookingAt = "";
+	public string tagName = "Clickable";
+	public bool foundTagName = false;
+	public bool followMouse = true;
+	public Vector3 lastHitPos = Vector3.one;
+
+	void rayUpdate() {
+		RaycastHit hit;
+		Ray ray;
+
+		if (followMouse) {
+			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		} else {
+			ray = new Ray(transform.position, transform.forward);
+		}
+
+		if (Physics.Raycast(ray, out hit)) {
+			isLooking = true;
+			isLookingAt = hit.collider.name;
+
+			lastHitPos = hit.point;
+
+			if (hit.collider.gameObject.tag == tagName) {
+				foundTagName = true;
+			} else {
+				foundTagName = false;
+			}
+		} else {
+			isLooking = false;
+			isLookingAt = "";
+			foundTagName = false;
 		}
 	}
 		

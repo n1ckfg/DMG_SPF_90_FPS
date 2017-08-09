@@ -5,18 +5,18 @@ using UnityEngine;
 public class ColorChanger : MonoBehaviour {
 
 	public Color newColor;
-	private Raycaster raycaster;
+	private BasicController ctl;
 	private Renderer ren;
 	private Color origColor;
 
 	void Awake() {
 		ren = GetComponent<Renderer>();
 		origColor = ren.material.color;
-		raycaster = Camera.main.GetComponent<Raycaster>();
+		ctl = GameObject.FindGameObjectWithTag("Player").GetComponent<BasicController>();
 	}
 	
 	void Update() {
-		if (raycaster.foundTagName && raycaster.isLookingAt == gameObject.name) {
+		if (ctl.foundTagName && ctl.isLookingAt == gameObject.name && ctl.isDrawing) {
 			ren.material.color = newColor;
 		} else {
 			ren.material.color = origColor;
