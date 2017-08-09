@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColorChanger : MonoBehaviour {
 
 	public Color newColor;
+
 	private BasicController ctl;
 	private Renderer ren;
 	private Color origColor;
@@ -16,7 +17,7 @@ public class ColorChanger : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (ctl.foundTagName && ctl.isLookingAt == gameObject.name && ctl.isDrawing) {
+		if (ctl.isLookingAt == gameObject.name && ctl.isDrawing) {
 			ren.material.color = newColor;
 		} else {
 			ren.material.color = origColor;

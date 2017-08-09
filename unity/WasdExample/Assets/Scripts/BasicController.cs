@@ -21,7 +21,6 @@ public class BasicController : MonoBehaviour {
 	public float walkSpeed = 10f;
 	public float runSpeed = 100f;
 	public float accel = 0.01f;
-	//public float turnSpeed = 200f;
 	public Transform homePoint;
 
 	private float currentSpeed;
@@ -51,13 +50,7 @@ public class BasicController : MonoBehaviour {
 		p.y = 0f;
 		p.z = Input.GetAxis("Vertical") * Time.deltaTime * currentSpeed;
 
-		//float mX = Input.GetAxis("Mouse X") * Time.deltaTime * turnSpeed;
-		//float mY = Input.GetAxis("Mouse Y") * Time.deltaTime * turnSpeed;
-
 		transform.Translate(p.x, p.y, p.z);
-
-		//transform.Rotate(mY, mX, 0f);
-		//Debug.Log(mX + " " + mY);	
 
 		if (homePoint != null && Input.GetKeyDown(KeyCode.Home)){
 			transform.position = homePoint.position;
@@ -73,18 +66,19 @@ public class BasicController : MonoBehaviour {
     public bool useMouse = true;
     public bool showCursor = false;
 	public bool useButton = true;
-	public bool fixedZ = true;
 	public RotationAxes axes = RotationAxes.MouseXAndY;
 	public float sensitivityX = 2f;
 	public float sensitivityY = 2f;
-	public float minimumX = -360f;
-	public float maximumX = 360f;
-	public float minimumY = -60f;
-	public float maximumY = 60f;
-	public Vector3 mousePos = Vector3.zero;
-	public bool clicked = false;
-	public bool isDrawing = false;
 
+	[HideInInspector] public Vector3 mousePos = Vector3.zero;
+	[HideInInspector] public bool clicked = false;
+	[HideInInspector] public bool isDrawing = false;
+
+	private bool fixedZ = false;
+	private float minimumX = -360f;
+	private float maximumX = 360f;
+	private float minimumY = -60f;
+	private float maximumY = 60f;
 	private float zPos = 1f;
 	private float rotationY = 0f;
 
@@ -135,12 +129,11 @@ public class BasicController : MonoBehaviour {
 
 	[Header("Raycaster")]
 	public bool useRaycaster = true;
-	public bool isLooking = false;
-	public string isLookingAt = "";
-	public string tagName = "Clickable";
-	public bool foundTagName = false;
 	public bool followMouse = true;
-	public Vector3 lastHitPos = Vector3.one;
+
+	[HideInInspector] public bool isLooking = false;
+	[HideInInspector] public string isLookingAt = "";
+	[HideInInspector] public Vector3 lastHitPos = Vector3.one;
 
 	void rayUpdate() {
 		RaycastHit hit;
@@ -157,16 +150,9 @@ public class BasicController : MonoBehaviour {
 			isLookingAt = hit.collider.name;
 
 			lastHitPos = hit.point;
-
-			if (hit.collider.gameObject.tag == tagName) {
-				foundTagName = true;
-			} else {
-				foundTagName = false;
-			}
 		} else {
 			isLooking = false;
 			isLookingAt = "";
-			foundTagName = false;
 		}
 	}
 		

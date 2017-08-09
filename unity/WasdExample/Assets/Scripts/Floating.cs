@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Floating : MonoBehaviour {
 
-	public float divider = 100f;
+	public float scale = 100f;
+	public float spread = 10f;
 
 	void Start() {
-		divider = Random.Range(divider - (divider/10f), divider + (divider/10f));
+		scale = Random.Range(scale - spread, scale + spread);
 	}
 	
 	void Update() {
-		transform.Translate(0f, Mathf.Sin(Time.realtimeSinceStartup)/divider, 0f);
+		transform.Translate(0f, Mathf.Sin(Time.realtimeSinceStartup)/scale, 0f);
 	}
 
 }
