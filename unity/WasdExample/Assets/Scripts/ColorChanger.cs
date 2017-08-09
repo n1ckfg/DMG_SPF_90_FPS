@@ -16,7 +16,7 @@ public class ColorChanger : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (raycaster.foundTagName) {
+		if (raycaster.foundTagName && raycaster.isLookingAt == gameObject.name) {
 			ren.material.color = newColor;
 		} else {
 			ren.material.color = origColor;
