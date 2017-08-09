@@ -402,6 +402,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useKeyboard: 1
+  useYAxis: 0
+  yAxisName: Vertical2
   walkSpeed: 10
   runSpeed: 100
   accel: 0.01

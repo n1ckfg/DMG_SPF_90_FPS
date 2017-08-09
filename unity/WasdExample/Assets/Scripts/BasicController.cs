@@ -18,6 +18,8 @@ public class BasicController : MonoBehaviour {
 
     [Header("Keyboard")] 
     public bool useKeyboard = true;
+    public bool useYAxis = false;
+    public string yAxisName = "Vertical2";
 	public float walkSpeed = 10f;
 	public float runSpeed = 100f;
 	public float accel = 0.01f;
@@ -47,7 +49,12 @@ public class BasicController : MonoBehaviour {
 		}
 
 		p.x = Input.GetAxis("Horizontal") * Time.deltaTime * currentSpeed;
-		p.y = 0f;
+        if (useYAxis) {
+            p.y = Input.GetAxis(yAxisName) * Time.deltaTime * currentSpeed;
+        }
+        else {
+            p.y = 0f;
+        }
 		p.z = Input.GetAxis("Vertical") * Time.deltaTime * currentSpeed;
 
 		transform.Translate(p.x, p.y, p.z);
