@@ -6,6 +6,7 @@ public class BasicController : MonoBehaviour {
 	private void Start() {
 		if (useKeyboard) wasdStart();
 		if (useMouse) mouseStart();
+        collisionStart();
 	}
 
 	private void Update() {
@@ -31,9 +32,9 @@ public class BasicController : MonoBehaviour {
 
 	private void wasdStart() {
 		currentSpeed = walkSpeed;
-	}
-	
-	private void wasdUpdate() {
+    }
+
+    private void wasdUpdate() {
 		if (Input.GetKeyDown(KeyCode.LeftShift)) {
 			run = true;
 		} else if (Input.GetKeyUp(KeyCode.LeftShift)) {
@@ -142,7 +143,7 @@ public class BasicController : MonoBehaviour {
 	[HideInInspector] public string isLookingAt = "";
 	[HideInInspector] public Vector3 lastHitPos = Vector3.one;
 
-	void rayUpdate() {
+	private void rayUpdate() {
 		RaycastHit hit;
 		Ray ray;
 
@@ -161,6 +162,25 @@ public class BasicController : MonoBehaviour {
 			isLooking = false;
 			isLookingAt = "";
 		}
-	}
-		
+    }
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ 
+
+    [Header("Collisions")]
+    public bool useCollisions = false;
+
+    private Rigidbody rb;
+
+    private void collisionStart() {
+
+        rb = GetComponent<Rigidbody>();
+
+        if (useCollisions && rb != null) {
+            rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        } else if (!useCollisions && rb != null) {
+            rb.useGravity = false;
+            rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+        }
+    }
 }
