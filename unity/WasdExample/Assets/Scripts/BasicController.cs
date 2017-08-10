@@ -3,7 +3,13 @@ using System.Collections;
 
 public class BasicController : MonoBehaviour {
 
-	private void Start() {
+    private Rigidbody rb;
+
+    private void Awake() {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start() {
 		if (useKeyboard) wasdStart();
 		if (useMouse) mouseStart();
         collisionStart();
@@ -92,7 +98,7 @@ public class BasicController : MonoBehaviour {
 
 	private void mouseStart() {
         Cursor.visible = showCursor;
-		if (GetComponent<Rigidbody>()) GetComponent<Rigidbody>().freezeRotation = true;
+		if (rb != null) rb.freezeRotation = true;
 	}
 
 	private void mouseUpdate() {
@@ -169,18 +175,16 @@ public class BasicController : MonoBehaviour {
     [Header("Collisions")]
     public bool useCollisions = false;
 
-    private Rigidbody rb;
-
     private void collisionStart() {
-
-        rb = GetComponent<Rigidbody>();
-
-        if (useCollisions && rb != null) {
-            rb.useGravity = true;
-            rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        } else if (!useCollisions && rb != null) {
-            rb.useGravity = false;
-            rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+        if (rb != null) {
+            if (useCollisions) {
+                rb.useGravity = true;
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+            } else {
+                rb.useGravity = false;
+                rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+            }
         }
     }
+
 }
