@@ -23,7 +23,16 @@ public class DotsManager : MonoBehaviour {
 		}
 	}
 
-	private void setSpread() {
+    private void Update() {
+        for (int i=0; i<dots.Count; i++) {
+            if (!dots[i].alive && Time.realtimeSinceStartup > dots[i].clickTime + 0.1f) {
+                Destroy(dots[i].gameObject);
+                dots.Remove(dots[i]);
+            }
+        }
+    }
+
+    private void setSpread() {
 		spread = Mathf.Abs(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f)).z);
 	}
 

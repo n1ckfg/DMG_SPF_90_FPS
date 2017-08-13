@@ -93,6 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c975a4fec7c9742a0a7f23eba2aacdd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 114602829060596642, guid: 22f4a6361fb10b740addd4731e2c0a82,
+    type: 2}
   scale: 400
   spread: 200
   clickColor: {r: 1, g: 0.1448276, b: 0, a: 0}
